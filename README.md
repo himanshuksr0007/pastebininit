@@ -1,5 +1,7 @@
 # PastebinInit - Pastebin CLI Uploader
 
+``` this readme has been generate via the use of AI ```
+
 A Bash script for uploading pastes to [Pastebin](https://pastebin.com) from the CLI.
 
 ## Quick Start
@@ -7,55 +9,55 @@ A Bash script for uploading pastes to [Pastebin](https://pastebin.com) from the 
 ### 1. Get Your API Key
 
 The Pastebin requires a API key for all uploads
-
-# PastebinInit - Installation Guide by Platform
-
-Complete step-by-step instructions for Linux, macOS, Windows (WSL), and Windows (Git Bash).
-
 ---
 
-# 🐧 LINUX / macOS INSTALLATION
+### LINUX / macOS INSTALLATION
 
-## Step 1: Clone the Repository
+#### Step 1: Clone the Repository
 
 ```bash
 cd ~
-git clone https://github.com/yourusername/pastebininit.git
+
+git clone https://github.com/himanshuksr0007/pastebininit.git
+
 cd pastebininit
+
 bash install.sh
 ```
 ---
 
-## Step 2: Verify Installation
+#### Step 2: Verify Installation
 
 ```bash
  pastebininit --help
 ```
 ---
 
-# 🪟 WINDOWS - WSL  INSTALLATION
+### WINDOWS - WSL  INSTALLATION
 
 ```
 Same as linux
 ```
----
 
 ---
 
-# 🪟 WINDOWS - Git Bash INSTALLATION
+### WINDOWS - Git Bash INSTALLATION
 
-## Step 1: Clone Repository
+#### Step 1: Clone Repository
 
 ```bash
 cd ~
-cd /c/Users/YourUsername/Desktop
-git clone https://github.com/yourusername/pastebininit.git
+
+cd /c/Users/Username/Desktop
+
+git clone https://github.com/himanshuksr0007/pastebininit.git
+
 cd pastebininit
 ```
 
 ---
 
-## Step 2: Install Dependencies
+#### Step 2: Install Dependencies
 
 ```bash
 pip install requests
@@ -63,7 +65,7 @@ pip install requests
 
 ---
 
-## Step 3: Make Script Executable
+#### Step 3: Make Script Executable
 
 ```bash
 chmod +x pastebininit
@@ -71,7 +73,7 @@ chmod +x pastebininit
 
 ---
 
-## Usage || Examples
+## Usage examples
 
 ```bash
 Please refer to example.md
