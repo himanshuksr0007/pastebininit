@@ -1,107 +1,75 @@
 #!/bin/bash
+# PastebinInit Installation Script
+# Installs dependencies and sets up the tool
 
-# PastebinInit installer
-# Installs pastebininit to /usr/local/bin
-# Run with: sudo ./install.sh
+set -e  # Exit on error
 
-set -euo pipefail
+echo "================================"
+echo "PastebinInit - Installation"
+echo "================================"
+echo ""
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m'
-
-# Paths
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MAIN_SCRIPT="$SCRIPT_DIR/pastebininit.sh"
-INSTALL_PATH="/usr/local/bin/pastebininit"
-
-# Print messages
-info() {
-    echo -e "${BLUE}ℹ${NC} $1"
-}
-
-success() {
-    echo -e "${GREEN}✓${NC} $1"
-}
-
-error() {
-    echo -e "${RED}✗${NC} $1" >&2
-}
-
-warning() {
-    echo -e "${YELLOW}⚠${NC} $1"
-}
-
-# Need root for /usr/local/bin
-if [[ $EUID -ne 0 ]]; then
-    error "Need root access (use: sudo ./install.sh)"
+# Check Python is installed
+echo "ℹ Checking Python 3..."
+if ! command -v python3 &> /dev/null; then
+    echo "✗ Python 3 is not installed"
+    echo ""
+    echo "Install Python 3:"
+    echo "  Ubuntu/Debian: sudo apt install python3"
+    echo "  macOS: brew install python3"
+    echo "  Windows: Download from python.org"
     exit 1
 fi
 
-# Make sure the main script is there
-if [[ ! -f "$MAIN_SCRIPT" ]]; then
-    error "Can't find: $MAIN_SCRIPT"
+PYTHON_VERSION=$(python3 --version 2>&1 | awk '{print $2}')
+echo "✓ Python $PYTHON_VERSION found"
+echo ""
+
+# Check pip is installed
+echo "ℹ Checking pip3..."
+if ! command -v pip3 &> /dev/null; then
+    echo "✗ pip3 is not installed"
+    echo ""
+    echo "Install pip3:"
+    echo "  Ubuntu/Debian: sudo apt install python3-pip"
+    echo "  macOS: pip3 comes with Python"
+    echo "  Windows: pip comes with Python"
     exit 1
 fi
 
-info "Installing PastebinInit..."
+PIP_VERSION=$(pip3 --version 2>&1 | awk '{print $2}')
+echo "✓ pip3 found"
+echo ""
 
-# Check what's missing
-info "Checking dependencies..."
-MISSING_DEPS=()
+# Install requests library
+echo "ℹ Installing Python dependencies..."
+pip3 install --user requests
+echo "✓ Dependencies installed"
+echo ""
 
-for cmd in curl jq; do
-    if ! command -v "$cmd" &> /dev/null; then
-        MISSING_DEPS+=("$cmd")
-    else
-        success "Found: $cmd"
-    fi
-done
-
-# Try to install missing stuff
-if [[ ${#MISSING_DEPS[@]} -gt 0 ]]; then
-    warning "Missing: ${MISSING_DEPS[*]}"
-    
-    # Detect package manager and install
-    if command -v apt-get &> /dev/null; then
-        info "Installing via apt-get..."
-        apt-get update
-        apt-get install -y "${MISSING_DEPS[@]}" bc
-    elif command -v brew &> /dev/null; then
-        info "Installing via Homebrew..."
-        brew install "${MISSING_DEPS[@]}" bc
-    elif command -v apk &> /dev/null; then
-        info "Installing via apk..."
-        apk add "${MISSING_DEPS[@]}" bc
-    else
-        warning "Couldn't auto-install"
-        warning "Install these manually: ${MISSING_DEPS[*]} bc"
-    fi
+# Make script executable
+if [ -f "pastebininit" ]; then
+    echo "ℹ Making pastebininit executable..."
+    chmod +x pastebininit
+    echo "✓ pastebininit is now executable"
+    echo ""
 fi
 
-# Make executable and copy
-chmod 755 "$MAIN_SCRIPT"
-success "Set permissions"
-
-info "Copying to $INSTALL_PATH..."
-cp "$MAIN_SCRIPT" "$INSTALL_PATH"
-chmod 755 "$INSTALL_PATH"
-success "Installed!"
-
-# Check if it worked
-if command -v pastebininit &> /dev/null; then
-    success "All set!"
-    info ""
-    info "Try it:"
-    info "  pastebininit --help"
-    info ""
-    info "Quick test:"
-    info "  echo 'Hello World' > test.txt"
-    info "  pastebininit -f test.txt"
-else
-    error "Installation might have failed. Check your PATH"
-    exit 1
+# Create symbolic link for easier access (optional)
+if [ -f "pastebininit" ]; then
+    echo "ℹ Setup complete!"
+    echo ""
+    echo "Next steps:"
+    echo ""
+    echo "1. Get your API key from: https://pastebin.com/doc_api"
+    echo ""
+    echo "2. Try your first upload:"
+    echo "   python3 pastebininit --api-key YOUR_KEY --content 'Hello World'"
+    echo ""
+    echo "3. For more examples, see EXAMPLES.md"
+    echo ""
 fi
+
+echo "================================"
+echo "✓ Installation Successful!"
+echo "================================"
